@@ -11,9 +11,10 @@ int main(int ac, char **av, char **ev)
 ssize_t bytes_read;
 char *command = NULL;
 size_t length = 0;
-pid_t my_pid;
-int status;
+char *new_command;
+char **argv;
 bool from_pipe = false;
+int n = 0;
 while (1 && !from_pipe)
 {
 /*condition is for checking wether this input comes from the*/
@@ -27,31 +28,42 @@ bytes_read = getline(&command, &length, stdin);
 if (bytes_read == -1)
 {
 perror("getline failed!");
-free(command);
 return (EXIT_FAILURE);
 }
-command[bytes_read - 1] = '\0';
-my_pid = fork();/*child process creation*/
-if (my_pid == -1)
+command[bytes_read - 1] = '\0'; /*remove the new line*/
+argv = _split(command, " ");    /*use of _split function*/
+n = argv_counter(argv);         /*call of argv_counter function*/
+char *ptr = argv[0]; /*pointer to the command*/
+if (strcmp(argv[0], "exit") == 0)
 {
-perror("process creation failed");
+_free(argv, n);
 free(command);
-return (EXIT_FAILURE);
+_exit_function();
 }
-if (my_pid == 0)/*inside the child process*/
+else if (argv[1] != NULL)    /*when there is an argument of option*/
 {
-_execute(command, ev);
+argument_handling(argv, ptr, ev); /*use of argument_handling function*/
 }
-if ((wait(&status)) == -1) /*parent process*/
+else if (argv[1] == NULL && *ptr == '/' && access(argv[0], F_OK) == 0) /*to check wether the command is an absolute path*/
 {
-perror("wait failed");
+process_creation(argv, ev); /*use of process_creation function*/
+}
+else if (*ptr != '/' && ((new_command = path_handling(argv[0])) != NULL)) /*if it's not an absolute paht*/
+{
+argv[0] = strdup(new_command);
+process_creation(argv, ev); /*use of process_creation function*/
+}
+else
+{
+_free(argv, n);     /*call of _free function*/
+_execute(argv, ev); /*if the command does not exit*/
+}
+}
+if (from_pipe == false) /*if the input has been piped*/
+{
 free(command);
-exit(EXIT_FAILURE);
-}
-}
-if (from_pipe == false)
-{
-free(command);
+free(new_command);
+_free(argv, n);
 }
 return (0);
 }
@@ -62,22 +74,13 @@ return (0);
  * @env: the environment variables
  * Return: nothing in success and FAILURE in failure
 */
-int _execute(char *buffer, char **env)
+int _execute(char **argv, char **env)
 {
-char **argv;
 int check;
-int n = 0;
-argv = _split(buffer, " "); /*Use of _split function*/
-if (argv == NULL)
-{
-perror("split failed");
-exit(EXIT_FAILURE);
-}
+int n  = argv_counter(argv);
 check = check_executable(argv[0]); /*Use of check_executable*/
 if (check == -1)
 {
-n = argv_counter(argv);
-_free(argv, n);
 perror("check_executable failed");
 exit(EXIT_FAILURE);
 }
@@ -87,6 +90,7 @@ perror("Not executable file");
 exit(EXIT_FAILURE);
 }
 execve(argv[0], argv, env);
+_free(argv, n);
 perror("execve failed"); /*printed only when execve fails*/
 exit(EXIT_FAILURE);
 }

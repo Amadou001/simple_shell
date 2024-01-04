@@ -11,13 +11,18 @@ char **words = NULL;
 char *token;
 int word_count = 0;
 int i;
-token = strtok(buffer, delim);
+char *saveptr;
+char *buffer_copy = strdup(buffer); /**copy buffer to avoid
+ *any inconvenience with strtok
+ */
+token = strtok(buffer_copy, delim);
 while (token != NULL)
 {
 words = realloc(words, (word_count + 1) * sizeof(char *));
 if (words == NULL)
 {
 perror("realloc failed inside split");
+free(buffer_copy);
 _free(words, word_count);
 return (NULL);
 }
@@ -25,7 +30,8 @@ words[word_count] = strdup(token);
 if (words[word_count] == NULL)
 {
 perror("strdup inside split failed");
-_free(words, word_count);
+free(buffer_copy);
+_free(words, word_count); /*call of _free function*/
 return (NULL);
 }
 token = strtok(NULL, delim);
@@ -35,9 +41,11 @@ words = realloc(words, (word_count + 1) * sizeof(char *));
 if (words == NULL)
 {
 perror("realloc failed inside split");
-_free(words, word_count);
+free(buffer_copy);
+_free(words, word_count); /*call of _free function*/
 return (NULL);
 }
+free(buffer_copy);
 words[word_count] = NULL;
 return (words);
 }

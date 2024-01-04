@@ -11,7 +11,8 @@ if ((stat(command, &file_stat)) == -1)
 {
 return (-1);/*stat failed*/
 }
-if (file_stat.st_mode & S_IXUSR || file_stat.st_mode & S_IXGRP || file_stat.st_mode & S_IXOTH)
+if (file_stat.st_mode & S_IXUSR || file_stat.st_mode & S_IXGRP
+|| file_stat.st_mode & S_IXOTH)
 {
 return (1); /*executable*/
 }
