@@ -23,6 +23,7 @@ if(pointer != NULL)
 argv[0] = strdup(pointer);  /**change of the initial command by
 *it's absolute path
 */
+free(pointer);
 ar_process_creation(argv, ev); /*call of ar_process_creation*/
 }
 }
@@ -64,10 +65,12 @@ perror("executable failed");
 else     /*parent process*/
 {
 check = wait(&status);
+_free(argv, n);
 if (check == -1)
 {
 perror("wait failed");
 return (EXIT_FAILURE);
 }
 }
+return (EXIT_SUCCESS);
 }

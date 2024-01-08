@@ -10,8 +10,6 @@ char **_split(char *buffer, const char *delim)
 char **words = NULL;
 char *token;
 int word_count = 0;
-int i;
-char *saveptr;
 char *buffer_copy = strdup(buffer); /**copy buffer to avoid
  *any inconvenience with strtok
  */
@@ -45,8 +43,8 @@ free(buffer_copy);
 _free(words, word_count); /*call of _free function*/
 return (NULL);
 }
-free(buffer_copy);
 words[word_count] = NULL;
+free(buffer_copy);
 return (words);
 }
 /***********************************************************/

@@ -36,8 +36,8 @@ return (full_path);
 free(full_path);
 token = strtok(NULL, ":");
 }
+perror("Not found");
 free(path_value);
-perror("file not found");
 return (NULL);
 }
 /**

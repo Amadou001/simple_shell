@@ -15,9 +15,12 @@ char *new_command;
 char **argv;
 bool from_pipe = false;
 int n = 0;
+char *ptr;
+(void)ac;
+(void)av;
 while (1 && !from_pipe)
 {
-/*condition is for checking wether this input comes from the*/
+/*condition is for checking wether this input comes from the terminal*/
 if (isatty(STDIN_FILENO) == 0)
 {
 from_pipe = true;
@@ -33,14 +36,14 @@ return (EXIT_FAILURE);
 command[bytes_read - 1] = '\0'; /*remove the new line*/
 argv = _split(command, " ");    /*use of _split function*/
 n = argv_counter(argv);         /*call of argv_counter function*/
-char *ptr = argv[0]; /*pointer to the command*/
+ptr = argv[0]; /*pointer to the command*/
 if (strcmp(argv[0], "exit") == 0)
 {
 _free(argv, n);
 free(command);
 _exit_function();
 }
-else if (argv[1] != NULL)    /*when there is an argument of option*/
+else if (argv[1] != NULL)    /*when there is an argument or option*/
 {
 argument_handling(argv, ptr, ev); /*use of argument_handling function*/
 }
@@ -51,19 +54,17 @@ process_creation(argv, ev); /*use of process_creation function*/
 else if (*ptr != '/' && ((new_command = path_handling(argv[0])) != NULL)) /*if it's not an absolute paht*/
 {
 argv[0] = strdup(new_command);
+free(new_command);
 process_creation(argv, ev); /*use of process_creation function*/
 }
 else
 {
-_free(argv, n);     /*call of _free function*/
 _execute(argv, ev); /*if the command does not exit*/
 }
 }
 if (from_pipe == false) /*if the input has been piped*/
 {
 free(command);
-free(new_command);
-_free(argv, n);
 }
 return (0);
 }
