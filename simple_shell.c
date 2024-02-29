@@ -31,7 +31,7 @@ return (0);
 }
 for (i = 0; i < bytes_read; i++)
 {
-if (command[i] == '#')
+if ((i == 0 || command[i - 1] == ' ') && command[i] == '#')
 {
 while (command[i] != '\n' && i < bytes_read)
 {
