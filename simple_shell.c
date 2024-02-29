@@ -13,7 +13,7 @@ char *command = NULL;
 size_t length = 0;
 char *new_command;
 char **argv;
-int n = 0;
+int n = 0, i = 0;
 char *ptr;
 (void)ac;
 (void)av;
@@ -29,8 +29,20 @@ if (bytes_read == -1)
 free(command);
 return (0);
 }
+for (i = 0; i < bytes_read; i++)
+{
+if (command[i] == '#')
+{
+while (command[i] != '\n' && i < bytes_read)
+{
+command[i] = ' ';
+i++;
+}
+}
+}
 command[bytes_read - 1] = '\0'; /*remove the new line*/
-if ((strspn(command, " ")) == (size_t)(bytes_read - 1)) {
+if ((strspn(command, " ")) == (size_t)(bytes_read - 1))
+{
 continue;
 }
 argv = _split(command, " \n");    /*use of _split function*/
