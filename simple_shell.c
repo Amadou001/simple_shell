@@ -26,7 +26,10 @@ if (isatty(STDIN_FILENO) == 0)
 from_pipe = true;
 /*from_pipe is assign to true if the input is not coming from the terminal*/
 }
+if (from_pipe == false)
+{
 write(STDOUT_FILENO, "$ ", 2);
+}
 bytes_read = getline(&command, &length, stdin);
 if (bytes_read == -1)
 {
