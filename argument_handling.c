@@ -20,6 +20,7 @@ else if (*ptr != '/')
 pointer = path_handling(ptr);
 if (pointer != NULL)
 {
+free(argv[0]);
 argv[0] = strdup(pointer);  /**change of the initial command by
 *it's absolute path
 */

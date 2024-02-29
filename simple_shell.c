@@ -34,10 +34,11 @@ bytes_read = getline(&command, &length, stdin);
 if (bytes_read == -1)
 {
 perror("getline failed!");
+free(command);
 return (EXIT_FAILURE);
 }
 command[bytes_read - 1] = '\0'; /*remove the new line*/
-argv = _split(command, " ");    /*use of _split function*/
+argv = _split(command, " \n");    /*use of _split function*/
 n = argv_counter(argv);         /*call of argv_counter function*/
 ptr = argv[0]; /*pointer to the command*/
 if (strcmp(argv[0], "exit") == 0)
@@ -56,6 +57,7 @@ process_creation(argv, ev); /*use of process_creation function*/
 }
 else if (*ptr != '/' && ((new_command = path_handling(argv[0])) != NULL)) /*if it's not an absolute paht*/
 {
+free(argv[0]);
 argv[0] = strdup(new_command);
 free(new_command);
 process_creation(argv, ev); /*use of process_creation function*/
@@ -63,6 +65,7 @@ process_creation(argv, ev); /*use of process_creation function*/
 else
 {
 _execute(argv, ev); /*if the command does not exit*/
+_free(argv, n);
 }
 }
 if (from_pipe == false) /*if the input has been piped*/
