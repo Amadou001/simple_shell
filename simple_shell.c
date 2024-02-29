@@ -71,7 +71,7 @@ return (0);
 
 /**
  * _execute - executes the file
- * @buffer: the input
+ * @argv: the input
  * @env: the environment variables
  * Return: nothing in success and FAILURE in failure
 */
