@@ -13,27 +13,19 @@ char *command = NULL;
 size_t length = 0;
 char *new_command;
 char **argv;
-bool from_pipe = false;
 int n = 0;
 char *ptr;
 (void)ac;
 (void)av;
-while (1 && !from_pipe)
+while (1 || isatty(STDIN_FILENO))
 {
-/*condition is for checking wether this input comes from the terminal*/
-if (isatty(STDIN_FILENO) == 0)
-{
-from_pipe = true;
-/*from_pipe is assign to true if the input is not coming from the terminal*/
-}
-if (from_pipe == false)
+if (isatty(STDIN_FILENO) != 0)
 {
 write(STDOUT_FILENO, "$ ", 2);
 }
 bytes_read = getline(&command, &length, stdin);
 if (bytes_read == -1)
 {
-perror("getline failed!");
 free(command);
 return (EXIT_FAILURE);
 }
@@ -66,11 +58,6 @@ else
 {
 _execute(argv, ev); /*if the command does not exit*/
 }
-}
-if (from_pipe == false) /*if the input has been piped*/
-{
-free(command);
-_free(argv, n);
 }
 return (0);
 }
