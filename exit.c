@@ -4,5 +4,5 @@
 */
 void _exit_function(void)
 {
-exit(2);
+exit(0);
 }
