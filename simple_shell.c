@@ -30,6 +30,9 @@ free(command);
 return (0);
 }
 command[bytes_read - 1] = '\0'; /*remove the new line*/
+if ((strspn(command, " ")) == (size_t)(bytes_read - 1)) {
+continue;
+}
 argv = _split(command, " \n");    /*use of _split function*/
 n = argv_counter(argv);         /*call of argv_counter function*/
 ptr = argv[0]; /*pointer to the command*/
