@@ -27,7 +27,7 @@ bytes_read = getline(&command, &length, stdin);
 if (bytes_read == -1)
 {
 free(command);
-return (EXIT_FAILURE);
+return (0);
 }
 command[bytes_read - 1] = '\0'; /*remove the new line*/
 argv = _split(command, " \n");    /*use of _split function*/
