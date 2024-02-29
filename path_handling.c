@@ -1,7 +1,7 @@
 #include "shell.h"
 /**
  * path_handling - handles the path
- * @input: given input
+ * @command: given input
  * Return: a pointer to the absolue path found
 */
 char *path_handling(char *command)

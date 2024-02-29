@@ -1,7 +1,7 @@
 #include "shell.h"
 /**
  * process_creation - creates a child process
- * @command: the input
+ * @argv: the input
  * @ev: environment variables
  * Return: nothing in success an failure if it's failed
 */

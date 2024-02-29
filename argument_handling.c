@@ -1,7 +1,7 @@
 #include "shell.h"
 /**
  * argument_handling - handles argument
- * @command: the input
+ * @argv: the input
  * @ptr: pointer to the command
  * @ev: environment variables
 */
@@ -18,7 +18,7 @@ else if (*ptr != '/')
 /*if it is not an absolute path , call of paht_handling function*/
 {
 pointer = path_handling(ptr);
-if(pointer != NULL)
+if (pointer != NULL)
 {
 argv[0] = strdup(pointer);  /**change of the initial command by
 *it's absolute path
@@ -36,9 +36,7 @@ _execute(argv, ev); /*call of _execute function*/
 /**
  * ar_process_creation - creates a process a special process
  * for the argument handling
- * @command: the input
- * @pointer: pointer to the command after passing by path
- * handling
+ * @argv: the input
  * @ev: environment variables
  * Return: nothing in success, failure if it's failed
 */
