@@ -43,11 +43,11 @@ n = argv_counter(argv);         /*call of argv_counter function*/
 ptr = argv[0]; /*pointer to the command*/
 if (strcmp(argv[0], "exit") == 0)
 {
-_free(argv, n);
 free(command);
+_free(argv, n);
 _exit_function();
 }
-else if (argv[1] != NULL)    /*when there is an argument or option*/
+else if (argv[1] != NULL && argv[0] != NULL)    /*when there is an argument or option*/
 {
 argument_handling(argv, ptr, ev); /*use of argument_handling function*/
 }
@@ -65,12 +65,12 @@ process_creation(argv, ev); /*use of process_creation function*/
 else
 {
 _execute(argv, ev); /*if the command does not exit*/
-_free(argv, n);
 }
 }
 if (from_pipe == false) /*if the input has been piped*/
 {
 free(command);
+_free(argv, n);
 }
 return (0);
 }
@@ -97,9 +97,9 @@ perror("Not executable file");
 exit(EXIT_FAILURE);
 }
 execve(argv[0], argv, env);
-_free(argv, n);
 perror("execve failed"); /*printed only when execve fails*/
 exit(EXIT_FAILURE);
+_free(argv, n);
 }
 
 /**

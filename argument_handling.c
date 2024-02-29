@@ -8,6 +8,8 @@
 void argument_handling(char **argv, char *ptr, char **ev)
 {
 char *pointer;
+int n;
+n = argv_counter(argv);
 if (*ptr == '/' && (access(ptr, F_OK)) == 0) /**checks wether it's
 *an absolute path and if it exists
 */
@@ -31,6 +33,7 @@ ar_process_creation(argv, ev); /*call of ar_process_creation*/
 else
 {
 _execute(argv, ev); /*call of _execute function*/
+_free(argv, n);
 }
 }
 /********************************************************/
