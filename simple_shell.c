@@ -47,6 +47,10 @@ else if (argv[1] == NULL && *ptr == '/' && access(argv[0], F_OK) == 0) /*to chec
 {
 process_creation(argv, ev); /*use of process_creation function*/
 }
+else if (argv[1] == NULL && *ptr == '.' && access(argv[0], F_OK) == 0) /*to check wether the command is an absolute path*/
+{
+process_creation(argv, ev); /*use of process_creation function*/
+}
 else if (*ptr != '/' && ((new_command = path_handling(argv[0])) != NULL)) /*if it's not an absolute paht*/
 {
 free(argv[0]);

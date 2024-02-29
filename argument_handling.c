@@ -16,6 +16,10 @@ if (*ptr == '/' && (access(ptr, F_OK)) == 0) /**checks wether it's
 {
 process_creation(argv, ev); /*call of process_creation function*/
 }
+else if (*ptr == '.' && (access(ptr, F_OK)) == 0)
+{
+process_creation(argv, ev);
+}
 else if (*ptr != '/')
 /*if it is not an absolute path , call of paht_handling function*/
 {
